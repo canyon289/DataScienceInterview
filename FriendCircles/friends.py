@@ -3,16 +3,26 @@ Given a matrix of friends find all the circles
 '''
 import ipdb
 import datetime
+from read_files import 
+
+
+def read_answers(file_num):
+    file_name = "output/output0{0}.txt".format(file_num)
+
+    with open(file_name, 'r') as file:
+        ans = file.read()
+    return int(ans)
+
 
 def read_matrix(file_num):
     '''
     Reads in input file and creates friends dictionary
     '''
-    file_name = "input0{0}.txt".format(num)
+    
+    file_name = "input/input0{0}.txt".format(file_num)
 
     with open(file_name, 'r') as file:
         input_list = file.read().split("\n")
-
     n = input_list.pop(0)
 
     #Construct friends dict
@@ -23,6 +33,7 @@ def read_matrix(file_num):
         for num_friend, friend in enumerate(friends):
             if friend == 'Y' and str(num_friend) != str(num_person):
                 relationships[str(num_person)].append(str(num_friend))
+                
     return relationships
 
 
@@ -85,10 +96,10 @@ def compile_trees(relationships):
 
     return len(large_friend_circle)
 
-start = datetime.datetime.now()
-for num in range(9):
+    
+for num in range(10):
     relationships = read_matrix(num)
-    now = datetime.datetime.now()
-    ans = compile_trees(relationships)
-    print("{1}:Minutes Elapsed {0}".format((now - start).seconds // 60, ans))
-#expand_tree("0", relationships)
+    ans = find_circles(relationships)
+    answer = read_answers(num)
+    correct = (ans == answer)
+    print("{0} Correct:{1}".format(ans,correct))
