@@ -1,4 +1,4 @@
-(function() {
+(function(){
 var zoom
 var svg
 var initial_transform
@@ -16,20 +16,18 @@ var height = 300
 zoom = d3.zoom()
 
 //Set Initial Transform
-svg = d3.select("#clipped").append("svg")
+svg = d3.select("#unclipped").append("svg")
    .attr("width", width)
    .attr("height", height);
 
 //Define clip path
-svg.append("defs")
-    .append("clipPath")
-      .attr("id", "cliprect")
-    .append("rect")
+svg.append("rect")
      .attr("x", 0)
      .attr("y", 0)
-     .attr("height", height +2 )
+     .attr("height", height)
      .attr("width", width/2)
-
+     .attr("fill", "blue")
+     .attr("opacity", .1)
 
 //Bounding Box
 svg.append("rect")
@@ -38,18 +36,18 @@ svg.append("rect")
    .attr("stroke", "black")
    .attr("stroke-width", "2px")
    .attr("fill", "none")
-                //.attr("clip-path", "url(#cliprect)")
-                //
+
+
 //Create unfiltered group
 unfiltered_g = svg.append("g")
 unfiltered_g.append("circle")
    .attr("cx", width/2)
    .attr("cy", height/2 + r)
-   .attr("r", 10);
+   .attr("r", 10)
+   .attr("fill", "red")
 
 //Filter group
 clippath_g = svg.append("g")
-               .attr("clip-path", "url(#cliprect)")
                 
 //Filtered group
 filtered_g = clippath_g.append("g")
@@ -58,8 +56,8 @@ filtered_g.append("circle")
    .attr("cx", width/2)
    .attr("cy", height/2 - r)
    .attr("r", 10)
-   //.attr("clip-path", "url(#cliprect)")
-
+   .attr("fill", "blue")
+  
 //Set the zoom Behavior, use the one initialized above instead of creating a new one
 svg.call(zoom.on("zoom", function() {
         unfiltered_g.attr("transform", d3.event.transform)
@@ -67,5 +65,5 @@ svg.call(zoom.on("zoom", function() {
       })
   )
 
-console.log("Clipped function ran")
+console.log("Unclipped function ran")
 }())
